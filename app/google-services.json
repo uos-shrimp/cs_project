@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "177766886113",
+    "project_id": "cs-project-backend",
+    "storage_bucket": "cs-project-backend.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:177766886113:android:2791042e9941a11a7c65a0",
+        "android_client_info": {
+          "package_name": "org.techtown.cs_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFaTx421eMktnacnnltqbf1Fo2IxTusHk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
