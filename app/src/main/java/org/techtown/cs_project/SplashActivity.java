@@ -10,6 +10,8 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.appcheck.FirebaseAppCheck;
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
 
+import org.techtown.cs_project.utils.FirebaseUtil;
+
 public class SplashActivity extends AppCompatActivity {
 
     @Override
@@ -30,11 +32,16 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(SplashActivity.this, LoginPhoneNumberActivity.class));
+                if(FirebaseUtil.isLoggedIn()) {
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                }
+                else {
+                    startActivity(new Intent(SplashActivity.this, LoginPhoneNumberActivity.class));
+                }
                 //splashActivity에서 loginPhoneNumber로 전환해라
                 finish();
             }
-        }, 3000);       //3초 기다려라
+        }, 1000);       //3초 기다려라
 
     }
 }
