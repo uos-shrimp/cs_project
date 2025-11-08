@@ -16,7 +16,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
@@ -27,6 +30,8 @@ import org.techtown.cs_project.utils.AndroidUtil;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 public class LoginOtpActivity extends AppCompatActivity {
@@ -58,9 +63,21 @@ public class LoginOtpActivity extends AppCompatActivity {
 
         sendOtp(phoneNumber, false);
 
+        nextBtn.setOnClickListener(v -> {
+            String enteredOtp = otpInput.getText().toString();
+            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verficationCode, enteredOtp);
+            signIn(credential);
+            setInProgress(true);
+        });
+
+        resendOtpTextView.setOnClickListener((v) -> {
+            sendOtp(phoneNumber, true);
+        });
+
     }
 
     void sendOtp(String phoneNumber, boolean isResend) {
+        stratResendTimer();
         setInProgress(true);
         PhoneAuthOptions.Builder builder =
             PhoneAuthOptions.newBuilder(mAuth)
@@ -76,14 +93,7 @@ public class LoginOtpActivity extends AppCompatActivity {
 
                         @Override
                         public void onVerificationFailed(@NonNull FirebaseException e) {
-                            String errorMessage = e.getMessage();
-
-                            // 1. 토스트 메시지로 자세한 오류 출력
-                            AndroidUtil.showToast(getApplicationContext(), "Verification Failed: " + errorMessage);
-
-                            // 2. 로그캣(Logcat)에 전체 오류 스택을 출력 (이게 가장 중요합니다)
-                            android.util.Log.e("OTP_DEBUG", "onVerificationFailed: ", e);
-
+                            AndroidUtil.showToast(getApplicationContext(), "OTP verification failed");
                             setInProgress(false);
                         }
 
@@ -118,7 +128,41 @@ public class LoginOtpActivity extends AppCompatActivity {
     }
 
     void signIn(PhoneAuthCredential phonAuthCredential) {
-        //login and go to next activity
+        setInProgress(true);
+        mAuth.signInWithCredential(phonAuthCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                setInProgress(false);
+                if(task.isSuccessful()) {
+                    Intent intent = new Intent(LoginOtpActivity.this, LoginUsernameAcitivity.class);
+                    intent.putExtra("phone",phoneNumber);
+                    startActivity(intent);
+                }
+                else {
+                    AndroidUtil.showToast(getApplicationContext(), "OTP verification failed");
+                }
+            }
+        });
+    }
+
+    void stratResendTimer() {
+        resendOtpTextView.setEnabled(false);
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                timeoutSeconds--;
+                resendOtpTextView.setText("Resend OTP in " + timeoutSeconds +" seconds");
+                if(timeoutSeconds <= 0) {
+                    timeoutSeconds = 60L;
+                    timer.cancel();
+                    runOnUiThread(() -> {
+                        resendOtpTextView.setEnabled(true);
+                    });
+                }
+            }
+        }, 0, 1000);
+
     }
 
 }
