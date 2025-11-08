@@ -1,6 +1,8 @@
 package org.techtown.cs_project;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,15 +12,16 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class LoginOtpActivity extends AppCompatActivity {
 
+    String phoneNumber;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login_otp);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+        phoneNumber = getIntent().getExtras().getString("phone");   //전 액비티비티에서 phone이라는 키로 넘겨준 extra 정보를 읽어와라
+
+        Toast.makeText(getApplicationContext(),  phoneNumber, Toast.LENGTH_LONG).show();
+
     }
 }

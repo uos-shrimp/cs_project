@@ -1,6 +1,11 @@
 package org.techtown.cs_project;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,17 +13,36 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.hbb20.CountryCodePicker;
+
 public class LoginPhoneNumberActivity extends AppCompatActivity {
+
+    CountryCodePicker countryCodePicker;
+    EditText phoneInput;
+    Button sendOtpBtn;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login_phone_number);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+
+        countryCodePicker = findViewById(R.id.login_countrycode);
+        phoneInput = findViewById(R.id.login_mobile_number);
+        sendOtpBtn = findViewById(R.id.send_otp_btn);
+        progressBar = findViewById(R.id.login_progress_bar);
+        progressBar.setVisibility(View.GONE);
+
+        countryCodePicker.registerCarrierNumberEditText(phoneInput);
+        sendOtpBtn.setOnClickListener((v) -> {
+            if(!countryCodePicker.isValidFullNumber()) {            //만약 컨트리코드픽커의 번호가 유효하지 않다면
+                phoneInput.setError("Phone number not valid");
+                return;
+            }
+            Intent intent = new Intent(LoginPhoneNumberActivity.this, LoginOtpActivity.class);      //LoginPhoneNumber에서 LoginOtpActivity로 넘어가는 Intent를 만들어라
+            intent.putExtra("phone",countryCodePicker.getFullNumberWithPlus());             //액티비티 전환할때 폰 번호도 같이 넘겨라
+            startActivity(intent);          //인텐트를 실형해라
         });
+
     }
 }
