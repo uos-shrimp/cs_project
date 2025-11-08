@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Cs_project">
         <activity
+            android:name=".SearchUserActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginUsernameAcitivity"
             android:exported="false" />
         <activity
