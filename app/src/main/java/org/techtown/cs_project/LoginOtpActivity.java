@@ -2,34 +2,123 @@ package org.techtown.cs_project;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.techtown.cs_project.utils.AndroidUtil;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class LoginOtpActivity extends AppCompatActivity {
 
     String phoneNumber;
+    Long timeoutSeconds = 60L;
+    String verficationCode;
+    PhoneAuthProvider.ForceResendingToken resendingToken;
+
+    EditText otpInput;
+    Button nextBtn;
+    ProgressBar progressBar;
+    TextView resendOtpTextView;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login_otp);
+
+        otpInput = findViewById(R.id.login_otp);
+        nextBtn = findViewById(R.id.login_next_btn);
+        progressBar = findViewById(R.id.login_progress_bar);
+        resendOtpTextView = findViewById(R.id.resend_otp_textview);
 
         phoneNumber = getIntent().getExtras().getString("phone");   //전 액비티비티에서 phone이라는 키로 넘겨준 extra 정보를 읽어와라
 
-        Toast.makeText(getApplicationContext(),  phoneNumber, Toast.LENGTH_LONG).show();
-
-        Map<String, String> data = new HashMap<>();
-        FirebaseFirestore.getInstance().collection("test").add(data);
+        sendOtp(phoneNumber, false);
 
     }
+
+    void sendOtp(String phoneNumber, boolean isResend) {
+        setInProgress(true);
+        PhoneAuthOptions.Builder builder =
+            PhoneAuthOptions.newBuilder(mAuth)
+                    .setPhoneNumber(phoneNumber)
+                    .setTimeout(timeoutSeconds, TimeUnit.SECONDS)
+                    .setActivity(this)
+                    .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                        @Override
+                        public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                            signIn(phoneAuthCredential);
+                            setInProgress(false);
+                        }
+
+                        @Override
+                        public void onVerificationFailed(@NonNull FirebaseException e) {
+                            String errorMessage = e.getMessage();
+
+                            // 1. 토스트 메시지로 자세한 오류 출력
+                            AndroidUtil.showToast(getApplicationContext(), "Verification Failed: " + errorMessage);
+
+                            // 2. 로그캣(Logcat)에 전체 오류 스택을 출력 (이게 가장 중요합니다)
+                            android.util.Log.e("OTP_DEBUG", "onVerificationFailed: ", e);
+
+                            setInProgress(false);
+                        }
+
+                        @Override
+                        public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                            super.onCodeSent(s, forceResendingToken);
+                            verficationCode = s;
+                            resendingToken = forceResendingToken;
+                            AndroidUtil.showToast(getApplicationContext(), "OTP verification successfully");
+                            setInProgress(false);
+                        }
+                    });
+        if(isResend) {
+            PhoneAuthProvider.verifyPhoneNumber(builder.setForceResendingToken(resendingToken).build());
+        }
+        else {
+            PhoneAuthProvider.verifyPhoneNumber(builder.build());
+        }
+    }
+
+
+
+    void setInProgress(boolean inProgress) {
+        if(inProgress) {
+            progressBar.setVisibility(View.VISIBLE);
+            nextBtn.setVisibility(View.GONE);
+        }
+        else {
+            progressBar.setVisibility(View.GONE);
+            nextBtn.setVisibility(View.VISIBLE);
+        }
+    }
+
+    void signIn(PhoneAuthCredential phonAuthCredential) {
+        //login and go to next activity
+    }
+
 }
