@@ -1,6 +1,7 @@
 package org.techtown.cs_project.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
+import org.techtown.cs_project.ChatActivity;
 import org.techtown.cs_project.R;
 import org.techtown.cs_project.model.UserModel;
+import org.techtown.cs_project.utils.AndroidUtil;
 import org.techtown.cs_project.utils.FirebaseUtil;
 
 public class SearchUserRecyclerAdapter extends FirestoreRecyclerAdapter<UserModel, SearchUserRecyclerAdapter.UserModelViewHolder> {
@@ -35,6 +38,10 @@ public class SearchUserRecyclerAdapter extends FirestoreRecyclerAdapter<UserMode
         }
         holder.itemView.setOnClickListener(v-> {
             //navigate to chat activity
+            Intent intent = new Intent(context, ChatActivity.class);
+            AndroidUtil.passUserModelAsIntent(intent,model);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
         });
 
     }
