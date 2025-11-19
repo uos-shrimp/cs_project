@@ -62,7 +62,7 @@ public class LoginUsernameAcitivity extends AppCompatActivity {
             userModel.setUsername(username);
         }
         else {
-            userModel = new UserModel(phoneNumber, username, Timestamp.now());      //아니면 새로 등록하기
+            userModel = new UserModel(phoneNumber, username, Timestamp.now(), FirebaseUtil.currentUserId());      //아니면 새로 등록하기
         }
 
         FirebaseUtil.currentUserDetails().set(userModel).addOnCompleteListener(new OnCompleteListener<Void>() {

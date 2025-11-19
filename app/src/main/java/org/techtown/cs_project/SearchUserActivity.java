@@ -9,7 +9,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.Query;
+
+
+import org.techtown.cs_project.adapter.SearchUserRecyclerAdapter;
+import org.techtown.cs_project.model.UserModel;
+import org.techtown.cs_project.utils.FirebaseUtil;
 
 public class SearchUserActivity extends AppCompatActivity {
 
@@ -17,6 +26,8 @@ public class SearchUserActivity extends AppCompatActivity {
     ImageButton searchButton;
     ImageButton backButton;
     RecyclerView recyclerView;
+
+    SearchUserRecyclerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,5 +58,39 @@ public class SearchUserActivity extends AppCompatActivity {
 
     void  setupSearchRecyclerView(String searchTerm) {
 
+        Query query = FirebaseUtil.allUserCollectionReference()
+                .whereGreaterThanOrEqualTo("username", searchTerm);
+
+        FirestoreRecyclerOptions<UserModel> options = new FirestoreRecyclerOptions.Builder<UserModel>()
+                .setQuery(query, UserModel.class).build();
+
+        adapter = new SearchUserRecyclerAdapter(options,getApplicationContext());
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+        adapter.startListening();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(adapter != null){
+            adapter.startListening();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(adapter != null){
+            adapter.stopListening();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(adapter != null){
+            adapter.startListening();
+        }
     }
 }

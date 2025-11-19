@@ -1,6 +1,7 @@
 package org.techtown.cs_project.utils;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -20,4 +21,9 @@ public class FirebaseUtil {
     public static DocumentReference currentUserDetails() {              //파이어베이스의 users 컬렉션에 유저 데이터를 입력하는 부분
         return FirebaseFirestore.getInstance().collection("users").document(currentUserId());
     }
+
+    public static CollectionReference allUserCollectionReference() {
+        return FirebaseFirestore.getInstance().collection("users");
+    }
+
 }

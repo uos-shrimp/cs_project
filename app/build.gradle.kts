@@ -42,9 +42,12 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+
     implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
     implementation("com.hbb20:ccp:2.5.0")
     implementation("com.google.firebase:firebase-auth")
     implementation ("com.google.firebase:firebase-appcheck-playintegrity")
     implementation ("com.google.firebase:firebase-appcheck")
+    implementation("com.firebaseui:firebase-ui-firestore:9.0.0")
 }
