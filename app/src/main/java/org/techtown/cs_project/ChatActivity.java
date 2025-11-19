@@ -16,8 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import org.techtown.cs_project.model.ChatMessageModel;
 import org.techtown.cs_project.model.ChatroomModel;
 import org.techtown.cs_project.model.UserModel;
 import org.techtown.cs_project.utils.AndroidUtil;
@@ -57,7 +59,37 @@ public class ChatActivity extends AppCompatActivity {
         });
         otherUsername.setText(otherUser.getUsername());
 
+        sendMessageBtn.setOnClickListener((v -> {
+            String message = messageInput.getText().toString().trim();
+            if (message.isEmpty()) {
+                return;
+            }
+            sendMessageToUser(message);
+        }));
+
         getOnCreateChatroomModel();
+    }
+
+
+    void sendMessageToUser(String  message) {
+
+        chatroomModel.setLastMessageTimestamp(Timestamp.now());
+        chatroomModel.setLastMessageSenderId(FirebaseUtil.currentUserId());
+        FirebaseUtil.getChatroomReference(chatroomId).set(chatroomModel);
+
+
+
+        ChatMessageModel chatMessageModel = new ChatMessageModel(message,FirebaseUtil.currentUserId(), Timestamp.now());
+        FirebaseUtil.getChatroomMessageReference(chatroomId).add(chatMessageModel)
+                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                        if(task.isSuccessful()) {
+                            messageInput.setText("");
+                        }
+                    }
+                });
+
     }
 
     void getOnCreateChatroomModel() {
@@ -77,5 +109,8 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
 
 }
