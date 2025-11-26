@@ -2,4 +2,20 @@
     <string name="app_name">cs_project</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="building_array">
+        <item>100주년기념관</item>
+        <item>미래관</item>
+        <item>법학관</item>
+        <item>조형관</item>
+        <item>시대융합관</item>
+        <item>제2공학관</item>
+        <item>배봉관</item>
+        <item>창공관</item>
+        <item>인문관</item>
+        <item>정보기술관</item>
+        <item>자연과학관</item>
+    </string-array>
+
+
 </resources>
