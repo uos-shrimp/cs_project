@@ -1,14 +1,19 @@
 package org.techtown.cs_project.adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+
 import org.techtown.cs_project.R;
+import org.techtown.cs_project.bookdetail;
 import org.techtown.cs_project.model.PostModel;
 
 public class HomeRecyclerAdapter extends FirestoreRecyclerAdapter<PostModel, HomeRecyclerAdapter.HomeViewHolder> {
@@ -22,6 +27,22 @@ public class HomeRecyclerAdapter extends FirestoreRecyclerAdapter<PostModel, Hom
         holder.titleTv.setText(model.getTitle());
         String infoText = "수강 장소 : " + model.getBuilding() + ", 가격 : " + model.getPrice() + "원";
         holder.placeTv.setText(infoText);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), bookdetail.class);
+
+                intent.putExtra("title", model.getTitle());       // 글 제목
+                intent.putExtra("bookTitle", model.getBookTitle()); // 책 이름
+                intent.putExtra("price", model.getPrice());       // 가격
+                intent.putExtra("building", model.getBuilding()); // 장소
+                intent.putExtra("content", model.getContent());   // 본문 내용
+                intent.putExtra("userId", model.getUserId());     // 작성자 ID
+
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @NonNull

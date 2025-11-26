@@ -17,12 +17,12 @@
         <ImageView
             android:layout_width="160dp"
             android:layout_height="160dp"
-            android:src="@drawable/chat_icon"
+            android:src="@drawable/person_icon"
             app:tint="@color/my_secondary"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Easy Chat"
+            android:text="책 쏙"
             android:textSize="40sp"
             android:textColor="@color/white"
             android:textStyle="bold"
@@ -33,15 +33,6 @@
             android:layout_width="32dp"
             android:layout_height="wrap_content"/>
     </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Developed by shrimp"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:layout_marginBottom="20dp"
-        android:textColor="@color/off_white"/>
 
 
 </RelativeLayout>

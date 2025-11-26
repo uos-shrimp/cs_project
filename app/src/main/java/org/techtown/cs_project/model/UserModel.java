@@ -1,7 +1,7 @@
 package org.techtown.cs_project.model;
 
 import com.google.firebase.Timestamp;
-                                                //users 컬렉션에 들어갈 데이터를 정리해서 클래스로 만든 부분
+
 public class UserModel {
     private String phone;
     private String username;

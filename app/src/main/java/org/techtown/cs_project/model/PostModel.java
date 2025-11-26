@@ -8,14 +8,12 @@ public class PostModel {
     private String building;
     private String price;
     private String content;
-    private String userId; // 누가 썼는지 식별하기 위해 필요
-    private Timestamp timestamp; // 언제 썼는지 정렬하기 위해 필요
+    private String userId;
+    private Timestamp timestamp;
 
-    // 빈 생성자 (파이어베이스 사용 시 필수!)
     public PostModel() {
     }
 
-    // 데이터 넣을 때 쓸 생성자
     public PostModel(String title, String bookTitle, String building, String price, String content, String userId, Timestamp timestamp) {
         this.title = title;
         this.bookTitle = bookTitle;
@@ -26,7 +24,6 @@ public class PostModel {
         this.timestamp = timestamp;
     }
 
-    // Getter와 Setter (필수!)
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
 

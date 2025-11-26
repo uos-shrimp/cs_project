@@ -12,17 +12,17 @@ import java.util.List;
 public class FirebaseUtil {
 
     public static String currentUserId() {
-        return FirebaseAuth.getInstance().getUid();                     //유저 uid를 반환해라(uid는 파이어베이스 authentication에 뜨는 사용자 고유 번호
+        return FirebaseAuth.getInstance().getUid();
     }
 
-    public static boolean isLoggedIn() {                                //로그인 되었는지 확인해서 로그인이 되었다면 인증하는 부분을 뛰어넘기 위해 만든 부분
+    public static boolean isLoggedIn() {
         if(currentUserId() != null) {
             return true;
         }
         return false;
     }
 
-    public static DocumentReference currentUserDetails() {              //파이어베이스의 users 컬렉션에 유저 데이터를 입력하는 부분
+    public static DocumentReference currentUserDetails() {
         return FirebaseFirestore.getInstance().collection("users").document(currentUserId());
     }
 
