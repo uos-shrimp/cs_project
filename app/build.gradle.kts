@@ -50,4 +50,7 @@ dependencies {
     implementation ("com.google.firebase:firebase-appcheck-playintegrity")
     implementation ("com.google.firebase:firebase-appcheck")
     implementation("com.firebaseui:firebase-ui-firestore:9.0.0")
+    implementation("com.github.dhaval2404:imagepicker:2.1")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.google.firebase:firebase-storage")
 }

@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Cs_project">
         <activity
+            android:name=".Show_Picture"
+            android:exported="false" />
+        <activity
             android:name=".bookdetail"
             android:exported="false" />
         <activity

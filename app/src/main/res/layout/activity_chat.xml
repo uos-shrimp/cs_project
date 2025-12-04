@@ -44,6 +44,32 @@
             android:layout_centerVertical="true"
             android:id="@+id/back_btn"/>
 
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/icon_picture"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint = "@color/white"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:visibility="gone"
+            android:id="@+id/picture_btn"/>
+
+        <Button
+            android:id="@+id/confirm_deposit_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="입금 확인"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/my_primary"
+            android:backgroundTint="@color/white"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:visibility="gone"
+            android:minWidth="0dp"
+            android:paddingHorizontal="10dp"
+            android:layout_marginEnd="5dp"/>
 
     </RelativeLayout>
 
