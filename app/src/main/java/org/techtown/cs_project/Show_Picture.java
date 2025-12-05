@@ -65,7 +65,7 @@ public class Show_Picture extends AppCompatActivity {
             Random random = new Random();
             int randomNum = random.nextInt(10000);
             //String authCode = String.format("%04d", randomNum);
-            String authCode = "0326";
+            String authCode = "1234";
 
             new AlertDialog.Builder(Show_Picture.this)
                     .setTitle("인증번호 생성 완료")

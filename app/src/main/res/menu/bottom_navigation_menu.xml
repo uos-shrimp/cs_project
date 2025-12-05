@@ -8,8 +8,8 @@
     <item android:title="Chats"
         android:icon="@drawable/chat_icon"
         android:id="@+id/menu_chat"/>
-    <item android:title="Profile"
-        android:icon="@drawable/person_icon"
+    <item android:title="New"
+        android:icon="@drawable/new_icon"
         android:id="@+id/menu_profile"/>
 
 </menu>
